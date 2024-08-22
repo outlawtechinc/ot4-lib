@@ -28,7 +28,7 @@ def to_snake_case(name):
     return "".join(["_" + i.lower() if i.isupper() else i for i in name]).lstrip("_")
 
 
-def default_wid_generator(class_name):
+def default_wid_generator_factory(class_name):
     return partial(make_wid, to_snake_case(class_name))
 
 
@@ -40,10 +40,11 @@ class WidMetaclass(type(models.Model)):
 
     def __new__(cls, name, bases, attrs):
         if not cls.is_abstract(attrs):
+            default_wid_generator = default_wid_generator_factory(name)
             attrs["wid"] = models.CharField(
-                max_length=100,
+                max_length=len(default_wid_generator()) + 10,
                 unique=True,
-                default=default_wid_generator(name),
+                default=default_wid_generator,
                 editable=False,
             )
 
