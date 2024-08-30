@@ -42,7 +42,7 @@ class WidMetaclass(type(models.Model)):
         if not cls.is_abstract(attrs):
             default_wid_generator = default_wid_generator_factory(name)
             attrs["wid"] = models.CharField(
-                max_length=len(default_wid_generator()) + 10,
+                max_length=len(default_wid_generator()) + 20,
                 unique=True,
                 default=default_wid_generator,
                 editable=False,
