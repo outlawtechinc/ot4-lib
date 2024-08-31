@@ -74,14 +74,6 @@ class WidModel(models.Model, metaclass=WidMetaclass):
         get_latest_by = "modified"
         abstract = True
 
-    def __str__(self):
-        return self.wid
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if "wid" not in kwargs and not self.wid:
-            self.wid = self._meta.get_field("wid").default()
-
     def save(self, **kwargs):
         self.update_modified = kwargs.pop(
             "update_modified",
