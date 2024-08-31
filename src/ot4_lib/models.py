@@ -42,7 +42,7 @@ class WidMetaclass(type(models.Model)):
         if not cls.is_abstract(attrs):
             default_wid_generator = default_wid_generator_factory(name)
             attrs["wid"] = models.CharField(
-                max_length=len(default_wid_generator()) + 20,
+                max_length=len(default_wid_generator()) + 100,
                 unique=True,
                 default=default_wid_generator,
                 editable=False,
@@ -79,7 +79,7 @@ class WidModel(models.Model, metaclass=WidMetaclass):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if "wid" not in kwargs:
+        if "wid" not in kwargs and not self.wid:
             self.wid = self._meta.get_field("wid").default()
 
     def save(self, **kwargs):

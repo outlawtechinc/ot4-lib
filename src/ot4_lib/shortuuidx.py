@@ -37,5 +37,21 @@ _extended_instance = ShortUUIDExtended()
 encodex = _extended_instance.encodex
 decodex = _extended_instance.decodex
 uuid = _extended_instance.uuid
+encode = _extended_instance.encode
+decode = _extended_instance.decode
+random = _extended_instance.random
+get_alphabet = _extended_instance.get_alphabet
+set_alphabet = _extended_instance.set_alphabet
 
-__all__ = ["ShortUUIDExtended", "encodex", "decodex", "uuid"]
+
+__all__ = [
+    "ShortUUIDExtended",
+    "encodex",
+    "decodex",
+    "uuid",
+    "encode",
+    "decode",
+    "random",
+    "get_alphabet",
+    "set_alphabet",
+]
