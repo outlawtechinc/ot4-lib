@@ -1,3 +1,4 @@
+import os
 from functools import partial
 
 from django.db import models
@@ -106,3 +107,21 @@ class SafeFileFieldFile(models.FileField.attr_class):
 
 class SafeFileField(models.FileField):
     attr_class = SafeFileFieldFile
+
+
+def up(template, instance, filename):
+    # Get the base name and extension using os.path.splitext
+    basename, ext = os.path.splitext(filename)
+    ext = ext.lstrip(".")  # Remove the dot from the extension
+    wid = instance.wid
+
+    context = dict(
+        basename=basename,
+        filename=filename,
+        ext=ext,
+        wid=wid,
+        instance=instance,
+    )
+
+    # Format the template with context
+    return template.format(**context)
