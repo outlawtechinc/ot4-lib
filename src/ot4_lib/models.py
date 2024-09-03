@@ -80,3 +80,29 @@ class WidModel(models.Model, metaclass=WidMetaclass):
             getattr(self, "update_modified", True),
         )
         super().save(**kwargs)
+
+
+class SafeImageFieldFile(models.ImageField.attr_class):
+    @property
+    def url(self):
+        # Check if the file exists (i.e., it's not None and has a file associated)
+        if self and self.name:
+            return super().url
+        return None
+
+
+class SafeImageField(models.ImageField):
+    attr_class = SafeImageFieldFile
+
+
+class SafeFileFieldFile(models.FileField.attr_class):
+    @property
+    def url(self):
+        # Check if the file exists (i.e., it's not None and has a file associated)
+        if self and self.name:
+            return super().url
+        return None
+
+
+class SafeFileField(models.FileField):
+    attr_class = SafeFileFieldFile
