@@ -12,11 +12,20 @@
 -e file:.
 asgiref==3.8.1
     # via django
+async-timeout==4.0.3
+    # via redis
 django==5.1
+    # via django-cacheops
     # via django-extensions
+    # via ot4-lib
+django-cacheops==7.0.2
     # via ot4-lib
 django-extensions==3.2.3
     # via ot4-lib
+funcy==2.0
+    # via django-cacheops
+redis==5.0.8
+    # via django-cacheops
 shortuuid==1.0.13
     # via ot4-lib
 sqlparse==0.5.1

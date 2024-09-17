@@ -20,22 +20,28 @@ asgiref==3.8.1
     # via django
 async-timeout==4.0.3
     # via aiohttp
+    # via redis
 attrs==24.2.0
     # via aiohttp
 black==24.8.0
 click==8.1.7
     # via black
 django==5.1
+    # via django-cacheops
     # via django-extensions
+    # via ot4-lib
+django-cacheops==7.0.2
     # via ot4-lib
 django-extensions==3.2.3
     # via ot4-lib
 frozenlist==1.4.1
     # via aiohttp
     # via aiosignal
-idna==3.7
+funcy==2.0
+    # via django-cacheops
+idna==3.10
     # via yarl
-multidict==6.0.5
+multidict==6.1.0
     # via aiohttp
     # via yarl
 mypy-extensions==1.0.0
@@ -46,6 +52,9 @@ pathspec==0.12.1
     # via black
 platformdirs==4.2.2
     # via black
+redis==5.0.8
+    # via django-cacheops
+ruff==0.6.5
 shortuuid==1.0.13
     # via ot4-lib
 sqlparse==0.5.1
@@ -55,5 +64,6 @@ tomli==2.0.1
 typing-extensions==4.12.2
     # via asgiref
     # via black
-yarl==1.9.4
+    # via multidict
+yarl==1.11.1
     # via aiohttp
