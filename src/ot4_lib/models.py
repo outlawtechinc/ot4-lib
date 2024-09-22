@@ -95,6 +95,26 @@ class SafeImageFieldFile(models.ImageField.attr_class):
 class SafeImageField(models.ImageField):
     attr_class = SafeImageFieldFile
 
+    def __init__(
+        self,
+        verbose_name=None,
+        name=None,
+        width_field=None,
+        height_field=None,
+        upload_to=None,
+        storage=None,
+        **kwargs,
+    ):
+        super().__init__(
+            verbose_name=verbose_name,
+            name=name,
+            width_field=width_field,
+            height_field=height_field,
+            upload_to=upload_to if upload_to is not None else up(),
+            storage=storage,
+            **kwargs,
+        )
+
 
 class SafeFileFieldFile(models.FileField.attr_class):
     @property
@@ -108,20 +128,32 @@ class SafeFileFieldFile(models.FileField.attr_class):
 class SafeFileField(models.FileField):
     attr_class = SafeFileFieldFile
 
+    def __init__(
+        self, verbose_name=None, name=None, upload_to="", storage=None, **kwargs
+    ):
+        super().__init__(
+            verbose_name=verbose_name,
+            name=name,
+            upload_to=upload_to if upload_to is not None else up(),
+            storage=storage,
+            **kwargs,
+        )
 
-def up(template, instance, filename):
-    # Get the base name and extension using os.path.splitext
-    basename, ext = os.path.splitext(filename)
-    ext = ext.lstrip(".")  # Remove the dot from the extension
-    wid = instance.wid
 
-    context = dict(
-        basename=basename,
-        filename=filename,
-        ext=ext,
-        wid=wid,
-        instance=instance,
-    )
+def up(template="uncategorized/icon_{wid}.{ext}"):
+    def up_inner(instance, filename):
+        basename, ext = os.path.splitext(filename)
+        ext = ext.lstrip(".")
+        wid = instance.wid
 
-    # Format the template with context
-    return template.format(**context)
+        context = dict(
+            basename=basename,
+            filename=filename,
+            ext=ext,
+            wid=wid,
+            instance=instance,
+        )
+
+        return template.format(**context)
+
+    return up_inner
