@@ -140,20 +140,21 @@ class SafeFileField(models.FileField):
         )
 
 
+def up_inner(template, instance, filename):
+    basename, ext = os.path.splitext(filename)
+    ext = ext.lstrip(".")
+    wid = instance.wid
+
+    context = dict(
+        basename=basename,
+        filename=filename,
+        ext=ext,
+        wid=wid,
+        instance=instance,
+    )
+
+    return template.format(**context)
+
+
 def up(template="uncategorized/icon_{wid}.{ext}"):
-    def up_inner(instance, filename):
-        basename, ext = os.path.splitext(filename)
-        ext = ext.lstrip(".")
-        wid = instance.wid
-
-        context = dict(
-            basename=basename,
-            filename=filename,
-            ext=ext,
-            wid=wid,
-            instance=instance,
-        )
-
-        return template.format(**context)
-
-    return up_inner
+    return partial(up_inner, template)
