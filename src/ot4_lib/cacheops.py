@@ -6,7 +6,7 @@ from typing import Union, List
 
 
 def invalidate_cacheops(
-    something: Union[None, Model, ModelBase, List[Model], List[ModelBase]] = None
+    something: Union[None, Model, ModelBase, List[Model], List[ModelBase]] = None,
 ):
     if not getattr(settings, "CACHEOPS_ENABLED", False):
         return

@@ -43,6 +43,8 @@ funcy==2.0
     # via django-cacheops
 kombu==5.4.2
     # via celery
+loguru==0.7.2
+    # via ot4-lib
 prompt-toolkit==3.0.47
     # via click-repl
 python-dateutil==2.9.0.post0

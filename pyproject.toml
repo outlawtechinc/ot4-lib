@@ -1,6 +1,6 @@
 [project]
 name = "ot4-lib"
-version = "24.9.6"
+version = "24.9.7"
 description = "Shared stuff for Outlaw projects"
 authors = [
     { name = "yokotoka", email = "hey@yokotoka.is" }
@@ -11,6 +11,7 @@ dependencies = [
     "django-extensions>=3.2.3",
     "django-cacheops>=7.0.2",
     "celery>=5.4.0",
+    "loguru>=0.7.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"

@@ -59,6 +59,8 @@ idna==3.10
     # via yarl
 kombu==5.4.2
     # via celery
+loguru==0.7.2
+    # via ot4-lib
 multidict==6.1.0
     # via aiohttp
     # via yarl
