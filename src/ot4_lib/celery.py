@@ -16,7 +16,7 @@ def only_once(task_name, redis_client, lock_timeout=None):
     def decorator(task_func):
         @wraps(task_func)
         def wrapper(*args, **kwargs):
-            lock_name = f"lock:{task_name}"
+            lock_name = f"once_lock:{task_name}"
             lock_acquired = redis_client.set(
                 lock_name, "locked", nx=True, ex=lock_timeout
             )
@@ -69,7 +69,7 @@ class Once(Task):
         redis_client = redis.StrictRedis.from_url(redis_url)
 
         # Find all keys that match the lock pattern
-        lock_pattern = "lock:*"
+        lock_pattern = "once_lock:*"
         lock_keys = redis_client.keys(lock_pattern)
 
         # Delete all lock keys
