@@ -83,6 +83,8 @@ packaging==24.1
     # via black
 pathspec==0.12.1
     # via black
+pip==24.3.1
+    # via ot4-lib
 platformdirs==4.2.2
     # via black
 prompt-toolkit==3.0.47

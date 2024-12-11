@@ -59,6 +59,8 @@ loguru==0.7.2
     # via ot4-lib
 niquests==3.11.2
     # via ot4-lib
+pip==24.3.1
+    # via ot4-lib
 prompt-toolkit==3.0.47
     # via click-repl
 python-dateutil==2.9.0.post0
