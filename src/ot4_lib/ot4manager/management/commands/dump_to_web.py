@@ -26,7 +26,7 @@ class Command(BaseCommand):
         if ENC_FILE.exists():
             ENC_FILE.unlink()
         call_command(
-            "dumpdata", exclude=["auth.permission", "contenttypes"], format="yaml"
+            "dumpdata", format="yaml"
         )
         if ask_pass:
             run_cmd(
