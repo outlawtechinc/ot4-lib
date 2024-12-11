@@ -3,12 +3,13 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 import environ
 
+
 def read_env(
-        env_file: Optional[Path] = None,
-        overwrite: bool = False,
-        encoding: str = "utf8",
-        overrides: Optional[Dict[str, Any]] = None,
-        scheme: Optional[Dict[str, tuple[Any, Any]]] = None,
+    env_file: Optional[Path] = None,
+    overwrite: bool = False,
+    encoding: str = "utf8",
+    overrides: Optional[Dict[str, Any]] = None,
+    scheme: Optional[Dict[str, tuple[Any, Any]]] = None,
 ) -> environ.Env:
     """
     Reads the .env file, initializes environment variables, and logs actions.
@@ -31,7 +32,12 @@ def read_env(
     env = environ.Env(**(scheme or {}))
 
     if env_file and env_file.exists():
-        env.read_env(env_file=env_file, overwrite=overwrite, encoding=encoding, **(overrides or {}))
+        env.read_env(
+            env_file=env_file,
+            overwrite=overwrite,
+            encoding=encoding,
+            **(overrides or {}),
+        )
         logger.info(f".env file found at: {env_file}")
         entry_count = count_env_lines(env_file)
         logger.info(f"Read {entry_count} valid entries from .env file.")
@@ -39,6 +45,7 @@ def read_env(
         logger.warning(".env file not found. Falling back to environment variables.")
 
     return env
+
 
 def count_env_lines(env_file: Path) -> int:
     """
@@ -54,4 +61,3 @@ def count_env_lines(env_file: Path) -> int:
         return sum(
             1 for line in file if line.strip() and not line.strip().startswith("#")
         )
-
