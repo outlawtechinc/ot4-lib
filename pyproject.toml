@@ -1,6 +1,6 @@
 [project]
 name = "ot4-lib"
-version = "24.12.2"
+version = "24.12.3"
 description = "Shared stuff for Outlaw projects"
 authors = [
     { name = "yokotoka", email = "hey@yokotoka.is" }

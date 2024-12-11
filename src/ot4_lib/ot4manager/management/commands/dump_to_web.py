@@ -25,9 +25,8 @@ class Command(BaseCommand):
             DATA_FILE.unlink()
         if ENC_FILE.exists():
             ENC_FILE.unlink()
-        call_command(
-            "dumpdata", format="yaml"
-        )
+        with DATA_FILE.open("w", encoding="utf-8") as fp:
+            call_command("dumpdata", format="yaml", stdout=fp)
         if ask_pass:
             run_cmd(
                 [
