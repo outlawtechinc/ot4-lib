@@ -1,20 +1,11 @@
 import niquests
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
-import subprocess
 import json
-import sys
 
-from ot4_lib.ot4manager.management.commands._constants import DATA_FILE, ENC_FILE, \
-    GPGConfig
+from ot4_lib.ot4manager.management.commands._common import DATA_FILE, ENC_FILE, \
+    GPGConfig, run_cmd
 
-
-def run_cmd(cmd: list[str]) -> str:
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(result.stderr, file=sys.stderr)
-        sys.exit(result.returncode)
-    return result.stdout.strip()
 
 class Command(BaseCommand):
     help = 'Export in YAML format, encrypt and upload data to file.io.'
@@ -56,7 +47,6 @@ class Command(BaseCommand):
             self.stderr.write(f'Failed to upload file. Status code: {response.status_code}')
             self.stderr.write(response.text)
 
-        # Очистка временных файлов
         if DATA_FILE.exists():
             DATA_FILE.unlink()
         if ENC_FILE.exists():

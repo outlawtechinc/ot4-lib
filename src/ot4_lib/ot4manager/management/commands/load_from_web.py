@@ -1,18 +1,10 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
-import subprocess
-import sys
-
-from ot4_lib.ot4manager.management.commands._constants import DATA_FILE, ENC_FILE, \
-    GPGConfig
 
 
-def run_cmd(cmd: list[str]) -> str:
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(result.stderr, file=sys.stderr)
-        sys.exit(result.returncode)
-    return result.stdout.strip()
+from ot4_lib.ot4manager.management.commands._common import DATA_FILE, ENC_FILE, \
+    GPGConfig, run_cmd
+
 
 class Command(BaseCommand):
     help = 'Download, decrypt and import YAML data from file.io'
