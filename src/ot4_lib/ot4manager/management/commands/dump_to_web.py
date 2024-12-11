@@ -1,19 +1,13 @@
-from pathlib import Path
-from dataclasses import dataclass
+import niquests
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 import subprocess
 import json
-import os
 import sys
 
-DATA_FILE = Path('data.yaml')
-ENC_FILE = Path('data.yaml.gpg')
+from ot4_lib.ot4manager.management.commands._constants import DATA_FILE, ENC_FILE, \
+    GPGConfig
 
-@dataclass
-class GPGConfig:
-    ask_pass: bool = False
-    password: str = os.environ.get('DEFAULT_GPG_PASS', 'defaultpass')
 
 def run_cmd(cmd: list[str]) -> str:
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -48,13 +42,21 @@ class Command(BaseCommand):
                 f'--symmetric --cipher-algo AES256 --armor '
                 f'--output {ENC_FILE} {DATA_FILE}'
             ])
-        curl_out = run_cmd(['curl','-F', f'file=@{ENC_FILE}', 'https://file.io'])
-        try:
-            link = json.loads(curl_out)['link']
-            self.stdout.write(link)
-        except Exception:
-            self.stderr.write('Failed to parse file.io response')
-            self.stderr.write(curl_out)
+        with ENC_FILE.open('rb') as f:
+            response = niquests.post('https://file.io', files={'file': f})
+
+        if response.status_code == 200:
+            try:
+                link = response.json()['link']
+                self.stdout.write(link)
+            except (KeyError, json.JSONDecodeError):
+                self.stderr.write('Failed to parse file.io response')
+                self.stderr.write(response.text)
+        else:
+            self.stderr.write(f'Failed to upload file. Status code: {response.status_code}')
+            self.stderr.write(response.text)
+
+        # Очистка временных файлов
         if DATA_FILE.exists():
             DATA_FILE.unlink()
         if ENC_FILE.exists():
