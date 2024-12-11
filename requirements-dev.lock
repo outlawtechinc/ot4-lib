@@ -30,6 +30,8 @@ billiard==4.2.1
 black==24.8.0
 celery==5.4.0
     # via ot4-lib
+charset-normalizer==3.4.0
+    # via niquests
 click==8.1.7
     # via black
     # via celery
@@ -57,8 +59,15 @@ frozenlist==1.4.1
     # via aiosignal
 funcy==2.0
     # via django-cacheops
+h11==0.14.0
+    # via urllib3-future
 idna==3.10
+    # via niquests
     # via yarl
+jh2==5.0.4
+    # via urllib3-future
+kiss-headers==2.4.3
+    # via niquests
 kombu==5.4.2
     # via celery
 loguru==0.7.2
@@ -68,6 +77,8 @@ multidict==6.1.0
     # via yarl
 mypy-extensions==1.0.0
     # via black
+niquests==3.11.2
+    # via ot4-lib
 packaging==24.1
     # via black
 pathspec==0.12.1
@@ -78,6 +89,8 @@ prompt-toolkit==3.0.47
     # via click-repl
 python-dateutil==2.9.0.post0
     # via celery
+qh3==1.2.1
+    # via urllib3-future
 redis==5.0.8
     # via django-cacheops
 ruff==0.6.5
@@ -96,10 +109,14 @@ typing-extensions==4.12.2
 tzdata==2024.1
     # via celery
     # via kombu
+urllib3-future==2.12.903
+    # via niquests
 vine==5.1.0
     # via amqp
     # via celery
     # via kombu
+wassima==1.1.5
+    # via niquests
 wcwidth==0.2.13
     # via prompt-toolkit
 yarl==1.11.1
