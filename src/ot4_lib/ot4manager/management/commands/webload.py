@@ -147,6 +147,8 @@ class Command(BaseCommand, ManagementPrintHelpers):
         run_cmd(
             [
                 "pg_restore",
+                "--no-owner",
+                "--no-acl",
                 "-U",
                 pg.user,
                 "-h",
