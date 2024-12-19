@@ -1,3 +1,3 @@
-build:
+pub:
 	rye build
 	hatch publish
