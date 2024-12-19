@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-
 from django.conf import settings
 
 
@@ -32,8 +31,7 @@ def get_pg_params() -> PgParams:
 
 
 class ManagementPrintHelpers:
-
-    def out(self, msg: str, style = None):
+    def out(self, msg: str, style=None):
         if msg is None:
             msg = ""
         if style:
@@ -58,13 +56,10 @@ def run_cmd(cmd: list[str], env: dict[str, str] | None = None) -> str:
     return result.stdout.strip()
 
 
-DATA_FILE = Path("ot4manager.dump")
-ENC_FILE = Path("ot4manager.dump.gpg")
-
-
 @dataclass
-class GPGConfig:
+class GpgConfig:
     ask_pass: bool = False
     password: str = os.environ.get("DEFAULT_GPG_PASS", "defaultpass")
-
-
+    home = Path("/tmp/.gnupg")
+    plain = Path("/tmp/ot4manager.dump")
+    encrypted = Path("/tmp/ot4manager.dump.gpg")

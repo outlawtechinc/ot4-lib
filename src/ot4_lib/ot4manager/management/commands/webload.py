@@ -1,13 +1,14 @@
 import os
 
 from django.core.management.base import BaseCommand
-from ._common import DATA_FILE
-from ._common import ENC_FILE
-from ._common import GPGConfig
 
+from ._common import GpgConfig
 from ._common import ManagementPrintHelpers
 from ._common import get_pg_params
 from ._common import run_cmd
+
+
+g = GpgConfig()
 
 
 def get_url_last_six_chars(url: str) -> str:
@@ -71,7 +72,7 @@ class Command(BaseCommand, ManagementPrintHelpers):
     def run_import_process(self, url: str, ask_pass: bool):
         self.notice("Starting full database import...")
         self.out(
-            f"Settings: plain_file={DATA_FILE.absolute()}, encrypted_file={ENC_FILE.absolute()}"
+            f"Settings: plain_file={g.plain.absolute()}, encrypted_file={g.encrypted.absolute()}"
         )
         pg = self.ensure_port_string(get_pg_params())
         env = {"PGPASSWORD": pg.password, **os.environ}
@@ -95,20 +96,20 @@ class Command(BaseCommand, ManagementPrintHelpers):
 
     def download_dump(self, url: str):
         self.notice(f"Downloading encrypted dump from {url}...")
-        run_cmd(["curl", "-f", "-o", str(ENC_FILE), url])
+        run_cmd(["curl", "-f", "-o", str(g.encrypted), url])
         self.ok("Encrypted dump downloaded.")
 
     def decrypt_dump(self, ask_pass: bool):
         self.notice("Decrypting dump with GPG...")
         if ask_pass:
-            run_cmd(["gpg", "--decrypt", "--output", str(DATA_FILE), str(ENC_FILE)])
+            run_cmd(["gpg", "--decrypt", "--output", str(g.plain), str(g.encrypted)])
         else:
-            password = GPGConfig().password
+            password = GpgConfig().password
             run_cmd(
                 [
                     "bash",
                     "-c",
-                    f'echo "{password}" | gpg --batch --yes --passphrase-fd 0 --decrypt --output {DATA_FILE} {ENC_FILE}',
+                    f'echo "{password}" | gpg --batch --yes --passphrase-fd 0 --decrypt --output {g.plain} {g.encrypted}',
                 ],
             )
         self.ok("Dump decrypted.")
@@ -154,7 +155,7 @@ class Command(BaseCommand, ManagementPrintHelpers):
                 pg.port,
                 "-d",
                 pg.name,
-                str(DATA_FILE),
+                str(g.plain),
             ],
             env=env,
         )
@@ -163,6 +164,6 @@ class Command(BaseCommand, ManagementPrintHelpers):
     def cleanup(self):
         if not self.keep_file:
             self.notice("Cleaning up temporary files...")
-            DATA_FILE.unlink(missing_ok=True)
-            ENC_FILE.unlink(missing_ok=True)
+            g.plain.unlink(missing_ok=True)
+            g.encrypted.unlink(missing_ok=True)
             self.ok("Temporary files removed.")
